@@ -6,7 +6,7 @@
   <a href="#"><img src="https://img.shields.io/github/license/skyran1278/frontend-kit.svg" alt="License"></a>
 </p>
 
-## frontend-kit
+## Frontend Kit
 
 - Bower
 - Gulp
@@ -20,13 +20,11 @@
 
 ```
 $ git clone https://github.com/skyran1278/frontend-kit.git
-```
 
-```
+$ cd frontend-kit
+
 $ npm install && bower install
-```
 
-```
 $ npm start
 ```
 ## Changelog
