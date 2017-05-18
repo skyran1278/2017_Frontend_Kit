@@ -1,4 +1,4 @@
-<p align="center"><a href="#" target="_blank"><img width="150"src="https://github.com/skyran1278/frontend-kit/blob/master/icons/playstore/icon.png"></a></p>
+<p align="center"><a href="#" target="_blank"><img width="150" src="https://github.com/skyran1278/frontend-kit/blob/master/icons/playstore/icon.png"></a></p>
 
 <p align="center">
   <a href="/"><img src="https://img.shields.io/github/downloads/skyran1278/frontend-kit/latest/total.svg" alt="Downloads"></a>
@@ -29,7 +29,7 @@ $ npm start
 ```
 ## Changelog
 
-Details changes for each commits are documented in the [commits notes](https://github.com/skyran1278/VbaProject/commits/master).
+Details changes for each commits are documented in the [commits notes](https://github.com/skyran1278/frontend-kit/commits/master).
 
 ## Contributors
 

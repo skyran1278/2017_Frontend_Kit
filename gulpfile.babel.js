@@ -11,6 +11,7 @@ import sass from 'gulp-sass';
 import uglify from 'gulp-uglify';
 import imagemin from 'gulp-imagemin';
 import cleanCSS from 'gulp-clean-css';
+import htmlmin from 'gulp-htmlmin';
 
 // 轉成 gulp 讀取的 vinyl（黑膠）流
 // 將常規流轉換為包含 Stream 的 vinyl 對象
@@ -40,29 +41,24 @@ import notify from 'gulp-notify';
 
 //--------------------------------------------讀取檔案路徑
 
-const dirs = {
-    src: 'src',
-    dist: 'dist'
-};
-
 const stylesPaths = {
-    src: `${dirs.src}/styles/*.scss`,
-    dist: `${dirs.dist}/css`
+    src: `src/styles/*.scss`,
+    dist: `dist/css`,
 };
 
 const htmlPaths = {
-    src: `${dirs.src}/*.{json,html}`,
-    dist: `${dirs.dist}`
+    src: `src/*.html`,
+    dist: `dist`,
 };
 
 const scriptsPaths = {
-    src: `${dirs.src}/scripts/*.js`,
-    dist: `${dirs.dist}/js`
+    src: `src/scripts/*.js`,
+    dist: `dist/js`,
 };
 
 const imagesPaths = {
-    src: `${dirs.src}/images/*`,
-    dist: `${dirs.dist}/img`
+    src: `src/images/*`,
+    dist: `dist/img`,
 };
 
 
@@ -70,19 +66,19 @@ const imagesPaths = {
 //--------------------------------------------清理目標文件
 
 gulp.task('cleanStyles', () => {
-    return del([`${stylesPaths.dist}/*`]);
+    return del(`${stylesPaths.dist}/*`);
 });
 
 gulp.task('cleanScripts', () => {
-    return del([`${scriptsPaths.dist}/*`]);
+    return del(`${scriptsPaths.dist}/*`);
 });
 
 gulp.task('cleanImages', () => {
-    return del([`${imagesPaths.dist}/*`]);
+    return del(`${imagesPaths.dist}/*`);
 });
 
 gulp.task('cleanHtml', () => {
-    return del([`${htmlPaths.dist}/*.{html,json}`]);
+    return del(`${htmlPaths.dist}/*.html`);
 });
 
 
@@ -145,16 +141,22 @@ gulp.task('images', ['cleanImages'], () => {
 
 // 合併 html 與 複製 JSON，完成後送到 dist
 gulp.task('html', ['cleanHtml'], () => {
-    gulp.src(htmlPaths.src)
+    return gulp.src(htmlPaths.src)
         .pipe(fileinclude({
           prefix: '@@',
           basepath: '@file'
         }))
+        .pipe(htmlmin({collapseWhitespace: true}))
         .pipe(gulp.dest('./dist'))
         .pipe(browserSync.stream());
 });
 
-
+// add json task, not normal
+// gulp.task('json', () => {
+//     return gulp.src('src/*.json')
+//         .pipe(gulp.dest('./dist'))
+//         .pipe(browserSync.stream());
+// });
 
 //--------------------------------------------任務宣告完成
 
@@ -170,9 +172,14 @@ gulp.task('watch', () => {
     gulp.watch(stylesPaths.src, ['styles']);
     gulp.watch(scriptsPaths.src, ['scripts']);
     gulp.watch(imagesPaths.src, ['images']);
-    gulp.watch(htmlPaths.src, ['html']);
+    gulp.watch([htmlPaths.src, `src/templates/*.html`], ['html']);
+    // add json
+    // gulp.watch('src/*.json', ['json']);
 });
 
 // 兩種任務類型，第一種會啟動 server
 gulp.task('default', ['server', 'html', 'scripts', 'styles', 'images', 'watch']);
 gulp.task('build', ['html', 'scripts', 'styles', 'images']);
+// add json
+// gulp.task('default', ['server', 'html', 'scripts', 'styles', 'images', 'watch', 'json']);
+// gulp.task('build', ['html', 'scripts', 'styles', 'images', 'json']);
